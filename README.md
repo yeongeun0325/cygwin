@@ -1,2 +1,2 @@
 ##cygwin
-#helli git
+#hello git
