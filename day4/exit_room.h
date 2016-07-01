@@ -60,7 +60,6 @@ void move_player(char cmd)
 		case 5:
 			printf("키를 얻었습니다\r\n");
 			player_inven=1;
-			buffer_map[player_xpos+player_ypos*8]=0;
 			break;
 	
 	}
