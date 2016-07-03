@@ -8,8 +8,34 @@ int nFSM=0;		//0=준비 1=게임플레이 2=게임클리어 3=게임오버
 int player_xpos;
 int player_ypos;
 int player_inven;	//0:없음 1:키보유
-int player_stage;
+int player_stage=1;
 int key_value;
+
+int world_map[]={
+	1,1,1,1,1,1,1,1,
+	1,0,0,0,0,0,0,1,
+	1,0,1,0,0,0,0,1,
+	1,0,1,0,0,0,0,4,
+	1,0,0,0,0,0,0,4,
+	1,0,0,0,5,1,0,1,
+	1,0,0,0,0,1,0,1,
+	1,1,1,1,1,1,1,1
+
+};
+
+
+int world_map2[]={
+	1,4,4,1,1,1,1,1,
+	1,0,0,0,0,0,0,1,
+	1,1,1,0,0,0,0,1,
+	1,5,1,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,1,0,1,
+	1,0,0,0,0,1,0,1,
+	1,1,1,1,1,1,1,1
+
+};
+
 
 void move_player(char cmd)
 {
@@ -52,10 +78,10 @@ void move_player(char cmd)
 		case 4:
 			if(player_inven==1){
 				printf("*미션클리어*\r\n");
-			//	player_stage=2;
+				player_stage=2;
 				player_xpos=6;
 				player_ypos=4;
-				nFSM=2;
+				nFSM=1;
 			}
 			else{
 				player_ypos=old_ypos;
@@ -71,7 +97,8 @@ void move_player(char cmd)
 	}
 	
 	buffer_map[player_xpos+player_ypos*8]=3;
-	
+
+	//키 보유시 키값0
 	switch(player_inven){
 		case 1:
 			buffer_map[key_value]=0;
@@ -84,4 +111,19 @@ void move_player(char cmd)
 
 }
 
+//버퍼 초기화
+int setStage(player_stage)
+{
+	if(player_stage==1){
+		for(int i=0;i<64;i++){
+				buffer_map[i]=world_map[i];
+		}
+	}
+	else if(player_stage==2){
+		for(int i=0;i<64;i++){
+			buffer_map[i]=world_map2[i];
+		}	
+	}
+
+}
 #endif
