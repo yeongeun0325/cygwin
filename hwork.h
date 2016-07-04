@@ -47,7 +47,7 @@ void map_printCell(int rawdata)
 			break;
 
 			case 3:
-			printf("A");
+			printf("☺");
 			break;
 
 			case 4:
