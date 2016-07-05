@@ -8,11 +8,14 @@
 #include<termios.h>
 
 #include"../engine/engine2d.h"
+#include"r_game.h"
 
 char screen_buffer[8*8];
 
 double rock_acc_tick;
 int rock_xpos,rock_ypos;
+int rock_pos_table[8]={1,3,2,3,4,5,7,2};
+int rock_cur_table_index=0;
 
 int car_xpos,car_ypos;
 
@@ -32,7 +35,7 @@ int main()
 
 	system("clear");
 	
-	car_xpos=3;
+	car_xpos=rock_pos_table[rock_cur_table_index];
 	car_ypos=7;
 
 	rock_xpos=0;
@@ -68,15 +71,20 @@ int main()
 		if(rock_acc_tick>0.5){
 			rock_acc_tick=0;
 			rock_ypos+=1;
-
+			
+			//화면끝 도달
 			if(rock_ypos>=8){
 				rock_ypos=0;
+				rock_cur_table_index++;
+				rock_cur_table_index%=8;
+				rock_xpos=rock_pos_table[rock_cur_table_index];
 			}
 		}
 
 		//게임 로직 (판정)
 		if(rock_ypos==car_ypos && rock_xpos==car_xpos){
 			bLoop=0;
+			//drawGame(screen_buffer);
 			printf("충돌발생! game over!\r\n");
 		}
 
@@ -92,28 +100,9 @@ int main()
 		screen_buffer[rock_ypos*8+rock_xpos]=1;
 
 		acc_tick+=delta_tick;
-		if(acc_tick>0.1){
+		if(acc_tick>0.1 || bLoop==0){
 			acc_tick=0;
-
-			//렌더링
-			gotoxy(1,1);
-			int x,y;
-			for(y=0;y<8;y++){
-				for(x=0;x<8;x++){
-					switch(screen_buffer[8*y+x]){	//현제 셀값
-						case 0:
-							putchar('.');
-							break;
-						case 1:
-							putchar('#');
-							break;
-						case 2:
-							putchar('A');
-							break;
-					}
-				}
-				printf("\r\n");
-			}
+			drawGame(8,8,screen_buffer);			
 
 		}
 	}
