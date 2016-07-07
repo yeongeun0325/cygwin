@@ -1,4 +1,4 @@
-#ifdef __MY_EDITOR__
+#ifndef __MY_EDITOR__
 #define __MY_EDITOR_H__
 
 /*
@@ -11,8 +11,8 @@
  */
 
 typedef struct{
-	char m_szStr;
-	void m_pNext;
+	char *m_szStr;
+	void *m_pNext;
 } _S_STR_LINE;
 
 
