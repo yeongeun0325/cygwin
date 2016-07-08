@@ -2,14 +2,9 @@
 #include<stdlib.h>
 #include<string.h>
 
-extern int bLoop;
-extern char *pTemp;
-extern char strCmd[];
+int bLoop=1;
 
-void me_exit();
-void me_push();
-void me_delete();
-void me_dump();
+void apply(char *);
 
 int main()
 {
@@ -17,36 +12,16 @@ int main()
 
 	while(bLoop)
 	{
+		char strCmd[128];
 		gets(strCmd);
 
-		pTemp = strtok(strCmd," ");
+		char *pTemp = strtok(strCmd," ");
 
 		if(!strcmp(pTemp,"exit")) {
-			me_exit();
+			bLoop=0;
 		}
-		else if(!strcmp(pTemp,"push")) {
-			me_push();
-		}
-		else if(!strcmp(pTemp,"pop")) {
-		}
-		else if(!strcmp(pTemp,"del")){	//앞에서부터 제거
-			me_delete();
-		}
-		else if(!strcmp(pTemp,"ins")){
-			int nIndex=atoi(strtok(NULL," "));
-			pTemp=strtok(NULL,"");
-			printf("%d %s 추가 \r\n",nIndex,pTemp);
-		}
-		else if(!strcmp(pTemp,"rm")){
-			int nIndex=atoi(strtok(NULL," "));
-
-		}
-		else if(!strcmp(pTemp,"set")){
-			//set 1 new string
-			int nIndex=atoi(strtok(NULL," "));
-		}
-		else if(!strcmp(pTemp,"dump")) {
-			me_dump();
+		else{
+			apply(pTemp);
 		}
 	}
 
