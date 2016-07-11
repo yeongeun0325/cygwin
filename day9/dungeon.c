@@ -26,6 +26,8 @@ int main()
 
 	town.node[0]=&dungeon_1;
 	dungeon_1.node[0]=&town;
+	dungeon_1.node[1]=&dungeon_2;
+	dungeon_2.node[1]=&dungeon_1;
 	town.node[1]=&dungeon_2;
 	dungeon_2.node[0]=&town;
 	
