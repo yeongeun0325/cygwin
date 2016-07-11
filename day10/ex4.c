@@ -100,9 +100,25 @@ int main()
 		}
 		else if(!strcmp(pTemp,"save")){
 			//save filename
+			char *szFileName=strtok(NULL,"");
+			printf("save:%s\r\n",szFileName);
+			FILE *pFile=fopen(szFileName,"w");
+			
+			printf("save:%s\r\n",szFileName);
+
+			fprintf(pFile,"%s ",);
+
+			fclose(pFile);
 		}
 		else if(!strcmp(pTemp,"load")){
 			//load filename
+			char *szFileName=strtok(NULL,"");
+			printf("load:%s\r\n",szFileName);
+
+			FILE *pFile=fopen(szFileName,"r");
+			char szBuf[128];
+
+
 		}
 	}
 
