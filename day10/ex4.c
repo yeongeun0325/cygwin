@@ -78,15 +78,25 @@ int main()
 			MapObject.m_pBuf[y*MapObject.m_header.m_nWidth+x]=tile_index;
 		}
 		else if(!strcmp(pTemp,"hline")){
-			int x,y;
+			int x,tile_index;
 
 			x=atoi(strtok(NULL," "));
-			y=atoi(strtok(NULL," "));
+			tile_index=atoi(strtok(NULL," "));
 			
-			for(int i=0;i<MapObject.m_header.m_nWidth;i++){
-					MapObject.m_pBuf[i*MapObject.m_header.m_nWidth+x]=y;
+			for(int y=0;y<MapObject.m_header.m_nHeight;y++){
+					MapObject.m_pBuf[y*MapObject.m_header.m_nHeight+x]=tile_index;
 			}
 
+		}
+		else if(!strcmp(pTemp,"vline")){
+			int y,tile_index;
+
+			y=atoi(strtok(NULL," "));
+			tile_index=atoi(strtok(NULL," "));
+
+			for(int x=0;x<MapObject.m_header.m_nWidth;x++){
+				MapObject.m_pBuf[y*MapObject.m_header.m_nWidth+x]=tile_index;
+			}
 		}
 	}
 
