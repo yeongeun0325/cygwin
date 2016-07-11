@@ -8,7 +8,7 @@
 #include<termios.h>
 
 #include"../engine/engine2d.h"
-#include"r_game.h"
+#include"racing_hw.h"
 
 #define MAX 100
 
@@ -137,11 +137,20 @@ void rg_PlayGame(double delta_tick)
 
 }
 
+void intro()
+{
+	printf("\r\n\r\n\r\n");
+	printf("\r\n\t\t====================\r\n\r\n");
+	printf("\r\n\t\t   press to start  \r\n\r\n");
+	printf("\r\n\t\t====================\r\n");
+}
+
 void rg_apply_mainTitle(double delta_tick)
 {
 	switch(nStep){
 		case 0:
-			puts("press to start");
+			intro();
+			//puts("press to start");
 			nStep=1;
 			break;
 		case 1:
@@ -165,7 +174,7 @@ int main()
 
 	for(int i=0;i<MAX;i++){
 		rock_pos_table[i]=rand()%10;
-		tree_pos_table[i]=rand()%10;
+		tree_pos_table[i]=rand()%9;
 	}
 
 	set_conio_terminal_mode();
