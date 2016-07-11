@@ -98,6 +98,12 @@ int main()
 				MapObject.m_pBuf[y*MapObject.m_header.m_nWidth+x]=tile_index;
 			}
 		}
+		else if(!strcmp(pTemp,"save")){
+			//save filename
+		}
+		else if(!strcmp(pTemp,"load")){
+			//load filename
+		}
 	}
 
 	return 0;
