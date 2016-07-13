@@ -2,14 +2,14 @@
 #define __MAP_H__
 
 typedef struct {
-	int m_nSkima;
-	int m_nWidth;
-	int m_nHeight;
+		int m_nSkima;
+			int m_nWidth;
+				int m_nHeight;
 }_S_MAP_HEADER;
 
 typedef struct {
-	_S_MAP_HEADER m_header;
-	char *m_pBuf;
+		_S_MAP_HEADER m_header;
+			char *m_pBuf;
 }_S_MAP_OBJECT;
 
 extern char Default_Tilepalete[];
