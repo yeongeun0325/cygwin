@@ -111,3 +111,18 @@ void map_drawTile_mirror_v(_S_MAP_OBJECT *pObj,int posx,int posy,_S_MAP_OBJECT *
 		}
 	}
 }
+
+void map_drawTile_trn(_S_MAP_OBJECT *pObj,int posx,int posy,_S_MAP_OBJECT *pTarget)
+{
+	for(int iy=0;iy < pObj->m_header.m_nHeight;iy++) {
+		for(int ix=0;ix < pObj->m_header.m_nWidth;ix++) {
+			int nPixel=pObj->m_pBuf[iy * pObj->m_header.m_nWidth + ix];
+			if(nPixel!=0){
+				map_PutTile(pTarget,ix + posx,iy + posy,pObj->m_pBuf[iy * pObj->m_header.m_nWidth + ix]);
+			}
+
+		}
+	}
+}
+
+
