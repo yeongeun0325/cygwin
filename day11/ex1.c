@@ -8,7 +8,7 @@
 #include<sys/select.h>
 
 #include"../engine/engine2d.h"
-#include"map.h"
+#include"../mapEditor/map.h"
 
 _S_MAP_OBJECT MapObject;
 
