@@ -23,6 +23,15 @@ char Default_Tilepalete[] = {
 void map_init(_S_MAP_OBJECT *pObj)
 {
 	pObj->m_pBuf = NULL;
+	pObj->fpload=map_load;
+	pObj->fpsave=map_save;
+	pObj->fpdump=map_dump;
+	pObj->fpnew=map_new;
+	pObj->fpPutTile=map_PutTile;
+	pObj->fpdrawTile=map_drawTile;
+	pObj->fpdrawTile_mirror_h=map_drawTile_mirror_h;
+	pObj->fpdrawTile_mirror_v=map_drawTile_mirror_v;
+	pObj->fpdrawTile_trn=map_drawTile_trn;
 }
 
 void map_dump(_S_MAP_OBJECT *pObj,char *pTile_pal)
@@ -99,10 +108,10 @@ int map_load(_S_MAP_OBJECT *pObj,char *filename)
 
 	fread(pObj->m_pBuf,nSize,1,pf);
 
-	/*for(int i=0;i<nSize;i++) {
+	for(int i=0;i<nSize;i++) {
 		printf("%d,",pObj->m_pBuf[i]);
 	}
-*/
+
 	return 0;
 }
 
