@@ -38,13 +38,14 @@ int main()
 	}
 
 	map_init(&gPlayer);
-	//
-	map_load(&gPlayer,"plane.dat");
+	gPlayer.fpload(&gPlayer,"plane.dat");
+	//map_load(&gPlayer,"plane.dat");
 
 	Plane_init(&gPlayerObject,&gPlayer,17,10);
 
 	map_init(&gBulletModel);
-	map_load(&gBulletModel,"bullet1.dat");
+	gBulletModel.fpload(&gBulletModel,"bullet1.dat");
+	//map_load(&gBulletModel,"bullet1.dat");
 
 	bullet_init(&gBulletObject,0,0,0,&gBulletModel);
 	
@@ -76,10 +77,12 @@ int main()
 		if(acc_tick > 0.1) {
 			//puts("tick..\r");
 			gotoxy(0,0);
-			map_drawTile(&gScreenBuffer[0],0,0,&gScreenBuffer[1]);
+			gScreenBuffer[0].fpdrawTile(&gScreenBuffer[0],0,0,&gScreenBuffer[1]);
+			//map_drawTile(&gScreenBuffer[0],0,0,&gScreenBuffer[1]);
 			gPlayerObject.fpDraw(&gPlayerObject,&gScreenBuffer[1]);
 			//Plane_Draw(&gPlayerObject,&gScreenBuffer[1]);
-			map_dump(&gScreenBuffer[1],Default_Tilepalete);
+			gScreenBuffer[1].fpdump(&gScreenBuffer[1],Default_Tilepalete);
+			//map_dump(&gScreenBuffer[1],Default_Tilepalete);
 			acc_tick = 0;
 		}
 
