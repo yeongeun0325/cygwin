@@ -14,10 +14,10 @@ typedef struct {
 
 } _S_BULLET_OBJECT;
 
-void bullet_init(_S_BULLET_OBJECT *pObj,double x,double y,double speed,_S_MAP_OBJECT *pBody);
-void  bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick);
-void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf);
+void bullet_init(_S_BULLET_OBJECT *,double ,double ,double ,_S_MAP_OBJECT *);
+void  bullet_apply(_S_BULLET_OBJECT *,double );
+void bullet_draw(_S_BULLET_OBJECT *,_S_MAP_OBJECT *);
 
-void bullet_fire(_S_BULLET_OBJECT *pObj,int x,int y,double speed,double lifeLimit);
+void bullet_fire(_S_BULLET_OBJECT *,int ,int ,double ,double);
 
 #endif

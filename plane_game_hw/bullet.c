@@ -11,7 +11,7 @@
 #include "../mapEditor/map.h"
 #include "bullet.h"
 
-void bullet_init(_S_BULLET_OBJECT *pObj,double x,double y,
+void bullet_init(_S_Bullet_Object *pObj,double x,double y,
 double speed,_S_MAP_OBJECT *pBody)
 {
 	pObj->m_nFSM=0;	//0:sleep 1:active
@@ -24,7 +24,7 @@ double speed,_S_MAP_OBJECT *pBody)
 
 }
 
-void bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick)
+void bullet_apply(_S_Bullet_Object *pObj,double deltaTick)
 {
 	switch(pObj->m_nFSM){
 		case 0:
@@ -41,15 +41,14 @@ void bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick)
 					pObj->m_nStep=0;
 					pObj->m_nFSM=0;
 				}
-				pObj->m_fXpos+=deltaTick*(pObj->m_fSpeed*pObj->m_fvx);
-				pObj->m_fYpos+=deltaTick*(pObj->m_fSpeed*pObj->m_fvy);	//스피드당 총알
+				pObj->m_fYpos-=deltaTick*pObj->m_fSpeed;	//스피드당 총알
 			}
 			break;
 	}
 	
 }
 
-void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
+void bullet_draw(_S_Bullet_Object *pObj,_S_MAP_OBJECT *pMapBuf)
 {
 	switch(pObj->m_nFSM){
 		case 0:
@@ -61,14 +60,12 @@ void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
 	}
 }
 
-void bullet_fire(_S_BULLET_OBJECT *pObj,int x,int y,double speed,double vx,double vy,double lifeLimit)
+void bullet_fire(_S_Bullet_Object *pObj,int x,int y,double speed,double lifeLimit)
 {
 	pObj->m_nFSM=1;
 	pObj->m_nStep=0;
 	pObj->m_fXpos=(double)x;
 	pObj->m_fYpos=(double)y;
-	pObj->m_fvx=vx;
-	pObj->m_fvy=vy;
 	pObj->m_fSpeed=speed;
 	pObj->m_fLifeLimit=lifeLimit;
 

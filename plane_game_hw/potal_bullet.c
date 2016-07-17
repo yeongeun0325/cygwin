@@ -9,9 +9,9 @@
 
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
-#include "bullet.h"
+#include "potal_bullet.h"
 
-void bullet_init(_S_BULLET_OBJECT *pObj,double x,double y,
+void Potal_Bullet_init(_S_Potal_Bullet_Object *pObj,double x,double y,
 double speed,_S_MAP_OBJECT *pBody)
 {
 	pObj->m_nFSM=0;	//0:sleep 1:active
@@ -24,7 +24,7 @@ double speed,_S_MAP_OBJECT *pBody)
 
 }
 
-void bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick)
+void Potal_Bullet_Apply(_S_Potal_Bullet_Object *pObj,double deltaTick)
 {
 	switch(pObj->m_nFSM){
 		case 0:
@@ -49,7 +49,7 @@ void bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick)
 	
 }
 
-void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
+void Potal_Bullet_Draw(_S_Potal_Bullet_Object *pObj,_S_MAP_OBJECT *pMapBuf)
 {
 	switch(pObj->m_nFSM){
 		case 0:
@@ -61,7 +61,7 @@ void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
 	}
 }
 
-void bullet_fire(_S_BULLET_OBJECT *pObj,int x,int y,double speed,double vx,double vy,double lifeLimit)
+void Potal_Bullet_Fire(_S_Potal_Bullet_Object *pObj,int x,int y,double speed,double vx,double vy,double lifeLimit)
 {
 	pObj->m_nFSM=1;
 	pObj->m_nStep=0;
