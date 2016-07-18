@@ -9,37 +9,17 @@
 
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
+#include "alien.h"
 
-#include "plane.h"
-
-
-void Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input)
+static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 {
 	switch(pObj->m_nFSM){
 		case 0: //dead
 			break;
-		case 1:
-			switch(key_input)
-			{
-				case 'a':
-					pObj->m_fXpos -= 1;
-					break;
-				case 'd':
-					pObj->m_fXpos += 1;
-					break;
-				case 'w':
-					pObj->m_fYpos -= 1;
-					break;
-				case 's':
-					pObj->m_fYpos += 1;
-					break;
-			}
-			break;
 	}
-
 }
 
-void Plane_Draw(_S_Plane *pObj, _S_MAP_OBJECT *pBuff)
+static void Draw(_S_ALIEN_OBJECT *pObj, _S_MAP_OBJECT *pBuff)
 {
 	switch(pObj->m_nFSM){
 		case 0:
@@ -54,20 +34,20 @@ void Plane_Draw(_S_Plane *pObj, _S_MAP_OBJECT *pBuff)
 }
 
 
-void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,double x,double y)
+void Alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody)
 {
 	pObj->m_nFSM=0;
 	pObj->m_nStep=0;
 	
 	pObj->m_pBody = pBody;
-	pObj->m_fYpos = y;
-	pObj->m_fXpos = x;
+	pObj->m_fYpos = 0;
+	pObj->m_fXpos = 0;
 	
 	pObj->m_fCenterX=0-(pBody->m_header.m_nWidth/2);
 	pObj->m_fCenterY=0-(pBody->m_header.m_nHeight/2);
 
 
-	pObj->pfApply=Plane_Apply;
-	pObj->pfDraw=Plane_Draw;
+	pObj->pfApply=Apply;
+	pObj->pfDraw=Draw;
 
 }
