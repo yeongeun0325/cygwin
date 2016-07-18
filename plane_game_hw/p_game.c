@@ -128,6 +128,9 @@ int main()
 					vx/=c; vy/=c;
 
 					Potal_Bullet_Fire(&gPotalBulletObject[i],gPlayerPotal.m_nXpos,gPlayerPotal.m_nYpos,vx,vy,10,0);
+					
+					
+
 					break;
 					}
 				}
