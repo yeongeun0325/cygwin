@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <sys/select.h>
 #include <termios.h>
+#include <math.h>
 
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
@@ -64,9 +65,28 @@ int main()
 				bLoop = 0;
 				puts("bye~ \r");
 			}
+			else if(ch=='j'){
+				double bullet_posx=0;
+				double bullet_posy=0;
+
+				double target_posx=gPlayerObject.m_fXpos;
+				double target_posy=gPlayerObject.m_fYpos;
+
+				double vx=target_posx-bullet_posx;
+				double vy=target_posy-bullet_posy;
+
+				double dist=sqrt(vx*vx+vy*vy);
+
+				vx/=dist; vy/=dist;
+
+				gBulletObject.pfFire(&gBulletObject,bullet_posx,bullet_posy,10,vx,vy,10.0);
+			}
 			gPlayerObject.pfApply(&gPlayerObject,delta_tick,ch);
 			//Plane_Apply(&gPlayerObject,delta_tick,ch);
 		}
+
+		//apply위치
+		gBulletObject.pfApply(&gBulletObject,delta_tick);
 	
 		//타이밍 계산 
 		acc_tick += delta_tick;

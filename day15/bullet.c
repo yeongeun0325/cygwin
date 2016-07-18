@@ -42,8 +42,9 @@ void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
 		case 0:
 			break;
 		case 1:
-			map_drawTile_trn(pObj->m_pBody,(int)pObj->m_fXpos,
-					(int)pObj->m_fYpos,pMapBuf);
+			map_drawTile_trn(pObj->m_pBody,
+					(int)pObj->m_fXpos+pObj->m_fCenterX,
+					(int)pObj->m_fYpos+pObj->m_fCenterY,pMapBuf);
 			break;
 	}
 }
@@ -67,6 +68,10 @@ double speed,_S_MAP_OBJECT *pBody)
 	pObj->m_nFSM=0;	//0:sleep 1:active
 	pObj->m_nStep=0;
 	pObj->m_fSpeed=speed;
+
+	pObj->m_fCenterX=0-(pBody->m_header.m_nWidth/2);
+	pObj->m_fCenterY=0-(pBody->m_header.m_nHeight/2);
+
 	pObj->m_fXpos=x;
 	pObj->m_fYpos=y;
 	pObj->m_pBody=pBody;

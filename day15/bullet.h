@@ -6,6 +6,9 @@ typedef struct _S_BULLET_OBJECT{
 	int m_nStep;
 	double m_fXpos;
 	double m_fYpos;
+
+	double m_fCenterX;
+	double m_fCenterY;
 	
 	double m_fSpeed;
 	double m_fvx;	//x축 벡터

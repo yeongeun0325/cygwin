@@ -18,16 +18,16 @@ void Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input)
 	switch(key_input)
 	{
 		case 'a':
-		pObj->m_nXpos -= 1;
+		pObj->m_fXpos -= 1;
 		break;
 		case 'd':
-		pObj->m_nXpos += 1;
+		pObj->m_fXpos += 1;
 		break;
 		case 'w':
-		pObj->m_nYpos -= 1;
+		pObj->m_fYpos -= 1;
 		break;
 		case 's':
-		pObj->m_nYpos += 1;
+		pObj->m_fYpos += 1;
 		break;
 	}
 	
@@ -35,16 +35,23 @@ void Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input)
 
 void Plane_Draw(_S_Plane *pObj, _S_MAP_OBJECT *pBuff)
 {
-	map_drawTile_trn(pObj->m_pBody,pObj->m_nXpos,pObj->m_nYpos,pBuff);
+	map_drawTile_trn(pObj->m_pBody,
+	(int)(pObj->m_fXpos+pObj->m_fCenterX),
+	(int)(pObj->m_fYpos+pObj->m_fCenterY),
+	pBuff);
 }
 
 
-void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,int x,int y)
+void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,double x,double y)
 {
 	pObj->m_pBody = pBody;
-	pObj->m_nYpos = y;
-	pObj->m_nXpos = x;
+	pObj->m_fYpos = y;
+	pObj->m_fXpos = x;
 	
+	pObj->m_fCenterX=0-(pBody->m_header.m_nWidth/2);
+	pObj->m_fCenterY=0-(pBody->m_header.m_nHeight/2);
+
+
 	pObj->pfApply=Plane_Apply;
 	pObj->pfDraw=Plane_Draw;
 

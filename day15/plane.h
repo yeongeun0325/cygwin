@@ -2,14 +2,18 @@
 #define __PLANE_H__
 
 typedef struct _S_Plane{
-	int m_nXpos;
-	int m_nYpos;
+	double m_fXpos;
+	double m_fYpos;
+
+	double m_fCenterX;
+	double m_fCenterY;
+
 	_S_MAP_OBJECT *m_pBody;
 	void (*pfApply)(struct _S_Plane *,double ,char);
 	void (*pfDraw)(struct _S_Plane *,_S_MAP_OBJECT *);
 } _S_Plane;
 
-void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,int x,int y);
+void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,double x,double y);
 void Plane_Apply(_S_Plane *pObj,double deltaTick,char key_input);
 void Plane_Draw(_S_Plane *pObj, _S_MAP_OBJECT *pBuff);
 
