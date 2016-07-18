@@ -13,8 +13,29 @@
 
 static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 {
+	double speed=10.0;
 	switch(pObj->m_nFSM){
 		case 0: //dead
+			pObj->m_nFSM=1;
+			break;
+		case 1:	//ready
+			pObj->m_nFSM=2;
+			break;
+		case 2:	//move right
+			pObj->m_fXpos+=(deltaTick*speed);
+			if(pObj->m_fXpos>=35){
+				pObj->m_fYpos+=3;
+				pObj->m_nFSM=3;
+				pObj->m_nStep=0;
+			}
+			break;
+		case 3:	//move left
+			pObj->m_fXpos-=(deltaTick*speed);
+			if(pObj->m_fXpos<=0){
+				pObj->m_fYpos-=3;
+				pObj->m_nFSM=2;
+				pObj->m_nStep=0;
+			}
 			break;
 	}
 }
