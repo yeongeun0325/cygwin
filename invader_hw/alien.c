@@ -26,13 +26,13 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 			break;
 		case 2: //move right
 			pObj->m_fXpos += (deltaTick * speed);
-			if(pObj->m_fXpos >= 35) {
+			if(pObj->m_fXpos >= 45) {
 				pObj->m_nFSM = 3;
 				pObj->m_nStep = 0;
 
-				pObj->m_fYpos += 1;
+				pObj->m_fYpos += 4;
 
-				if(pObj->m_fYpos >= 15) {
+				if(pObj->m_fYpos >= 20) {
 					pObj->m_nFSM = 0;
 				}
 			}
@@ -52,9 +52,9 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 				pObj->m_nStep = 0;
 				pObj->m_nFSM = 2;
 
-				pObj->m_fYpos += 1;
+				pObj->m_fYpos += 4;
 
-				if(pObj->m_fYpos >= 15) {
+				if(pObj->m_fYpos >= 20) {
 					pObj->m_nFSM = 0;
 				}
 			}
@@ -104,3 +104,5 @@ void alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody)
 
 
 }
+
+

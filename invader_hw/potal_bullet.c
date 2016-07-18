@@ -9,9 +9,22 @@
 
 #include "../engine/engine2d.h"
 #include "../mapEditor/map.h"
-#include "bullet.h"
+#include "potal_bullet.h"
 
-void bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick)
+void Potal_Bullet_init(_S_Potal_Bullet_Object *pObj,double x,double y,
+double speed,_S_MAP_OBJECT *pBody)
+{
+	pObj->m_nFSM=0;	//0:sleep 1:active
+	pObj->m_nStep=0;
+	pObj->m_fSpeed=speed;
+	pObj->m_fXpos=x;
+	pObj->m_fYpos=y;
+	pObj->m_pBody=pBody;
+
+
+}
+
+void Potal_Bullet_Apply(_S_Potal_Bullet_Object *pObj,double deltaTick)
 {
 	switch(pObj->m_nFSM){
 		case 0:
@@ -33,23 +46,22 @@ void bullet_apply(_S_BULLET_OBJECT *pObj,double deltaTick)
 			}
 			break;
 	}
-
+	
 }
 
-void bullet_draw(_S_BULLET_OBJECT *pObj,_S_MAP_OBJECT *pMapBuf)
+void Potal_Bullet_Draw(_S_Potal_Bullet_Object *pObj,_S_MAP_OBJECT *pMapBuf)
 {
 	switch(pObj->m_nFSM){
 		case 0:
 			break;
 		case 1:
-			map_drawTile_trn(pObj->m_pBody,
-					(int)pObj->m_fXpos+pObj->m_fCenterX,
-					(int)pObj->m_fYpos+pObj->m_fCenterY,pMapBuf);
+			map_drawTile_trn(pObj->m_pBody,(int)pObj->m_fXpos,
+					(int)pObj->m_fYpos,pMapBuf);
 			break;
 	}
 }
 
-void bullet_fire(_S_BULLET_OBJECT *pObj,int x,int y,double speed,double vx,double vy,double lifeLimit)
+void Potal_Bullet_Fire(_S_Potal_Bullet_Object *pObj,int x,int y,double speed,double vx,double vy,double lifeLimit)
 {
 	pObj->m_nFSM=1;
 	pObj->m_nStep=0;
@@ -60,23 +72,4 @@ void bullet_fire(_S_BULLET_OBJECT *pObj,int x,int y,double speed,double vx,doubl
 	pObj->m_fSpeed=speed;
 	pObj->m_fLifeLimit=lifeLimit;
 
-}
-
-void bullet_init(_S_BULLET_OBJECT *pObj,double x,double y,
-double speed,_S_MAP_OBJECT *pBody)
-{
-	pObj->m_nFSM=0;	//0:sleep 1:active
-	pObj->m_nStep=0;
-	pObj->m_fSpeed=speed;
-
-	pObj->m_fCenterX=0-(pBody->m_header.m_nWidth/2);
-	pObj->m_fCenterY=0-(pBody->m_header.m_nHeight/2);
-
-	pObj->m_fXpos=x;
-	pObj->m_fYpos=y;
-	pObj->m_pBody=pBody;
-
-	pObj->pfDraw=bullet_draw;
-	pObj->pfApply=bullet_apply;
-	pObj->pfFire=bullet_fire;
 }
