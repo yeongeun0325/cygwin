@@ -28,7 +28,7 @@ void Potal_Draw(_S_Potal *pObj, _S_MAP_OBJECT *pBuff)
 	}
 	//map_drawTile_trn(pObj->m_pBody,pObj->m_nXpos,pObj->m_nYpos,pBuff);
 }
-
+/*
 void Potal_Apply(_S_Potal *pObj,double deltaTick)
 {
 	switch(pObj->m_nFSM) {
@@ -38,7 +38,7 @@ void Potal_Apply(_S_Potal *pObj,double deltaTick)
 			break;
 	}
 }
-
+*/
 
 void Potal_init(_S_Potal *pObj,_S_MAP_OBJECT *pBody,int x,int y)
 {
