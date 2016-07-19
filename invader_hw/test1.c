@@ -29,7 +29,7 @@ _S_MAP_OBJECT gAlienModel;
 _S_MAP_OBJECT gPlaneBulletModel;
 
 _S_Plane gPlayerObject;
-_S_BULLET_OBJECT gBulletObjects[32];
+_S_BULLET_OBJECT gPlasmaObjects[32];
 _S_ALIEN_OBJECT gAlienObjects[8];
 _S_BULLET_OBJECT gPlaneBulletObjects[32];
 
@@ -62,8 +62,8 @@ int main()
 		bullet_init(&gPlaneBulletObjects[i],0,0,0,&gPlaneBulletModel);
 	}
 
-	for(int i=0;i<sizeof(gBulletObjects)/sizeof(_S_BULLET_OBJECT);i++){
-		bullet_init(&gBulletObjects[i],0,0,0,&gPlasmaModel);
+	for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++){
+		bullet_init(&gPlasmaObjects[i],0,0,0,&gPlasmaModel);
 	}
 
 	double TablePosition[]={0,10,20,30,40};
@@ -74,7 +74,7 @@ int main()
 		pObj->m_fXpos=TablePosition[i];
 		pObj->m_fYpos=5;
 		pObj->m_nFSM=1;
-		gAlienObjects[i].m_pBullet=&gBulletObjects[i];
+		gAlienObjects[i].m_pBullet=&gPlasmaObjects[i];
 
 	}
 
@@ -137,11 +137,11 @@ int main()
 		}
 
 		//총알 맞았을때 게임오버
-		for(int i=0;i<sizeof(gBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
-			if(gBulletObjects[i].m_nFSM!=0) {
+		for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++) {
+			if(gPlasmaObjects[i].m_nFSM!=0) {
 				
-				double bullet_posx=gBulletObjects[i].m_fXpos;
-				double bullet_posy=gBulletObjects[i].m_fYpos;
+				double bullet_posx=gPlasmaObjects[i].m_fXpos;
+				double bullet_posy=gPlasmaObjects[i].m_fYpos;
 
 				double target_posx=gPlayerObject.m_fXpos;
 				double target_posy=gPlayerObject.m_fYpos;
@@ -152,7 +152,7 @@ int main()
 				double dist=sqrt(vx*vx+vy*vy);
 
 				if(dist<0.1) {
-					gBulletObjects[i].m_nFSM=0;
+					gPlasmaObjects[i].m_nFSM=0;
 					gPlayerObject.m_nFSM=0;
 					gAlienObjects[i].m_nFSM=0;
 				}
@@ -178,8 +178,8 @@ int main()
 			}
 		}	
 
-		for(int i=0;i<sizeof(gBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
-			gBulletObjects[i].pfApply(&gBulletObjects[i],delta_tick);
+		for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++) {
+			gPlasmaObjects[i].pfApply(&gPlasmaObjects[i],delta_tick);
 
 		}
 
@@ -196,8 +196,8 @@ int main()
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
 
-			for(int i=0;i<sizeof(gBulletObjects)/sizeof(_S_BULLET_OBJECT);i++){
-				gBulletObjects[i].pfDraw(&gBulletObjects[i],&gScreenBuf[1]);
+			for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++){
+				gPlasmaObjects[i].pfDraw(&gPlasmaObjects[i],&gScreenBuf[1]);
 			}
 
 			for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_BULLET_OBJECT);i++){

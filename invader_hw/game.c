@@ -33,22 +33,6 @@ _S_BULLET_OBJECT gBulletObjects[32];
 _S_ALIEN_OBJECT gAlienObjects[8];
 _S_BULLET_OBJECT gPlaneBulletObjects[32];
 
-int getDist(_S_BULLET_OBJECT *pBullet,_S_Plane *pPlane)
-{
-	double bullet_posx=pBullet->m_fXpos;
-	double bullet_posy=pBullet->m_fYpos;
-
-	double target_posx=pPlane->m_fXpos;
-	double target_posy=pPlane->m_fYpos;
-
-	double vx=target_posx-bullet_posx;
-	double vy=target_posy-bullet_posy;
-
-	double dist=sqrt(vx*vx+vy*vy);
-
-	return dist;
-
-}
 
 int main()
 {
@@ -100,9 +84,6 @@ int main()
 	acc_tick=last_tick=0;
 	acc_guid_delay_tick=0;
 
-	int shootx=25;
-	int shooty=21;
-
 	while(bLoop) {
 		//타이밍처리 
 		clock_gettime(CLOCK_MONOTONIC,&work_timer);
@@ -123,14 +104,15 @@ int main()
 
 				for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
 					double vx,vy,c;
-
+					
 					vx=gAlienObjects[i].m_fXpos-gPlayerObject.m_fXpos;
 					vy=gAlienObjects[i].m_fYpos-gPlayerObject.m_fYpos;
 					c=sqrt(vx*vx+vy*vy);
 					vx/=c;	vy/=c;
-
+					
 					_S_BULLET_OBJECT *pObj = &gPlaneBulletObjects[i];
 					if(pObj->m_nFSM==0) { //슬립상태
+						//bullet_fire_1(pObj,gPlayerObject.m_fXpos,gPlayerObject.m_fYpos,10,5.0);
 						pObj->pfFire(pObj,gPlayerObject.m_fXpos,gPlayerObject.m_fYpos,10.0,vx,vy,10.0);
 						break;
 					}
@@ -157,9 +139,17 @@ int main()
 		//총알 맞았을때 게임오버
 		for(int i=0;i<sizeof(gBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
 			if(gBulletObjects[i].m_nFSM!=0) {
-				double dist;
+				
+				double bullet_posx=gBulletObjects[i].m_fXpos;
+				double bullet_posy=gBulletObjects[i].m_fYpos;
 
-				getDist(&gBulletObjects[i],&gPlayerObject);
+				double target_posx=gPlayerObject.m_fXpos;
+				double target_posy=gPlayerObject.m_fYpos;
+
+				double vx=target_posx-bullet_posx;
+				double vy=target_posy-bullet_posy;
+
+				double dist=sqrt(vx*vx+vy*vy);
 
 				if(dist<0.1) {
 					gBulletObjects[i].m_nFSM=0;
@@ -215,12 +205,7 @@ int main()
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
 
-			puts("---------------------------------------------\r");
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
-			puts("---------------------------------------------\r");
-
-			puts("move : w,a,s,d \r");
-			puts("quit : q \r");
 			acc_tick = 0;
 
 		}
