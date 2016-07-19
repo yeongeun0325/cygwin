@@ -123,7 +123,7 @@ int main()
 
 				for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
 					double vx,vy,c;
-					
+
 					vx=gAlienObjects[i].m_fXpos-gPlayerObject.m_fXpos;
 					vy=gAlienObjects[i].m_fYpos-gPlayerObject.m_fYpos;
 					c=sqrt(vx*vx+vy*vy);

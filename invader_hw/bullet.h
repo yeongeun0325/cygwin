@@ -29,5 +29,5 @@ typedef struct _S_BULLET_OBJECT {
 } _S_BULLET_OBJECT;
 
 void bullet_init(_S_BULLET_OBJECT *pObj,double x,double y,double speed,_S_MAP_OBJECT *pBody);
-
+//void bullet_fire_1(_S_BULLET_OBJECT *pObj,int x,int y,double speed,double lifeLimit)
 #endif

@@ -42,23 +42,6 @@ _S_BULLET_OBJECT gPlaneBulletObjects[32];
 _S_Potal gPlayerPotal;
 _S_Potal_Bullet_Object gPotalBulletObject;
 
-int getDist(_S_BULLET_OBJECT *pBullet,_S_Plane *pPlane)
-{
-	double bullet_posx=pBullet->m_fXpos;
-	double bullet_posy=pBullet->m_fYpos;
-
-	double target_posx=pPlane->m_fXpos;
-	double target_posy=pPlane->m_fYpos;
-
-	double vx=target_posx-bullet_posx;
-	double vy=target_posy-bullet_posy;
-
-	double dist=sqrt(vx*vx+vy*vy);
-
-	return dist;
-
-}
-
 int main()
 {
 
@@ -118,9 +101,6 @@ int main()
 	acc_guid_delay_tick=0;
 	acc_bullet_delay_tick=0;
 
-	int shootx=25;
-	int shooty=21;
-
 	while(bLoop) {
 		//타이밍처리 
 		clock_gettime(CLOCK_MONOTONIC,&work_timer);
@@ -141,7 +121,7 @@ int main()
 
 				for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
 					double vx,vy,c;
-					
+
 					vx=gAlienObjects[i].m_fXpos-gPlayerObject.m_fXpos;
 					vy=gAlienObjects[i].m_fYpos-gPlayerObject.m_fYpos;
 					c=sqrt(vx*vx+vy*vy);
@@ -157,27 +137,27 @@ int main()
 			}
 			_S_Potal_Bullet_Object *pObj=&gPotalBulletObject;
 			if(pObj->m_nFSM==0){
-                    double potal_bullet_posx=gPlayerPotal.m_nXpos;
-                    double potal_bullet_posy=gPlayerPotal.m_nYpos;
+				double potal_bullet_posx=gPlayerPotal.m_nXpos;
+				double potal_bullet_posy=gPlayerPotal.m_nYpos;
 
-                    double target_x=gPlayerObject.m_fXpos;
-                    double target_y=gPlayerObject.m_fYpos;
+				double target_x=gPlayerObject.m_fXpos;
+				double target_y=gPlayerObject.m_fYpos;
 
-					double vx=target_x-potal_bullet_posx;
-                    double vy=target_y-potal_bullet_posy;
+				double vx=target_x-potal_bullet_posx;
+				double vy=target_y-potal_bullet_posy;
 
-                  /*  double angle=0;
+				/*  double angle=0;
 					angle+=(delta_tick*45);
 					double rad=(angle/180.0)*PI;
 
 					double vx=(target_x-potal_bullet_posx)*cos(rad)-(target_y-potal_bullet_posy)*sin(rad);
 					double vy=(target_x-potal_bullet_posx)*sin(rad)+(target_y-potal_bullet_posy)*cos(rad);
-				
-*/
-                    double dist=sqrt(vx*vx+vy*vy);
-                    vx/=dist; vy/=dist;
 
-					Potal_Bullet_Fire(&gPotalBulletObject,gPlayerPotal.m_nXpos,gPlayerPotal.m_nYpos,10,vx,vy,10.0);
+*/
+				double dist=sqrt(vx*vx+vy*vy);
+				vx/=dist; vy/=dist;
+
+				Potal_Bullet_Fire(&gPotalBulletObject,gPlayerPotal.m_nXpos,gPlayerPotal.m_nYpos,10,vx,vy,10.0);
 			}
 			gPlayerObject.pfApply(&gPlayerObject,delta_tick,ch);	
 
@@ -198,30 +178,30 @@ int main()
 		}
 
 		{
-            double potal_bullet_posx=gPlayerPotal.m_nXpos;
-            double potal_bullet_posy=gPlayerPotal.m_nYpos;
+			double potal_bullet_posx=gPlayerPotal.m_nXpos;
+			double potal_bullet_posy=gPlayerPotal.m_nYpos;
 
-            double target_x=gPlayerObject.m_fXpos;
-            double target_y=gPlayerObject.m_fYpos;
+			double target_x=gPlayerObject.m_fXpos;
+			double target_y=gPlayerObject.m_fYpos;
 
-    	/*	double vx=target_x-potal_bullet_posx;
-            double vy=target_y-potal_bullet_posy;*/
+			/*	double vx=target_x-potal_bullet_posx;
+				double vy=target_y-potal_bullet_posy;*/
 
-            double angle=0;
-    		angle+=(delta_tick*45);
-	    	double rad=(angle/180.0)*PI;
+			double angle=0;
+			angle+=(delta_tick*45);
+			double rad=(angle/180.0)*PI;
 
 			double vx=(target_x-potal_bullet_posx)*cos(rad)-(target_y-potal_bullet_posy)*sin(rad);
 			double vy=(target_x-potal_bullet_posx)*sin(rad)+(target_y-potal_bullet_posy)*cos(rad);
-		
-            double dist=sqrt(vx*vx+vy*vy);
 
-            if(dist<0.1){
-                gPotalBulletObject.m_nFSM=0;
-            }
-         }
+			double dist=sqrt(vx*vx+vy*vy);
 
-        acc_bullet_delay_tick+=delta_tick;
+			if(dist<0.1){
+				gPotalBulletObject.m_nFSM=0;
+			}
+		}
+
+		acc_bullet_delay_tick+=delta_tick;
 		if(acc_bullet_delay_tick>2.0){	//2초동안 방향설정
 
 			acc_bullet_delay_tick=0;
@@ -246,9 +226,16 @@ int main()
 		//총알 맞았을때 게임오버
 		for(int i=0;i<sizeof(gBulletObjects)/sizeof(_S_BULLET_OBJECT);i++) {
 			if(gBulletObjects[i].m_nFSM!=0) {
-				double dist;
+				double bullet_posx=gBulletObjects[i].m_fXpos;
+				double bullet_posy=gBulletObjects[i].m_fYpos;
 
-				getDist(&gBulletObjects[i],&gPlayerObject);
+				double target_posx=gPlayerObject.m_fXpos;
+				double target_posy=gPlayerObject.m_fYpos;
+
+				double vx=target_posx-bullet_posx;
+				double vy=target_posy-bullet_posy;
+
+				double dist=sqrt(vx*vx+vy*vy);
 
 				if(dist<0.1) {
 					gBulletObjects[i].m_nFSM=0;

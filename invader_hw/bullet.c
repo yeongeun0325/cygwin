@@ -66,7 +66,18 @@ double lifeLimit)
 	pObj->m_fLifeLimit = lifeLimit;
 	
 }
+/*
+void bullet_fire_1(_S_BULLET_OBJECT *pObj,double x,double y,double speed,double lifeLimit)
+{
+	pObj->m_nFSM=1;
+	pObj->m_nStep=0;
+	pObj->m_fXpos=(double)x;
+	pObj->m_fYpos=(double)y;
+	pObj->m_fSpeed=speed;
+	pObj->m_fLifeLimit=lifeLimit;
 
+}
+*/
 void bullet_init(_S_BULLET_OBJECT *pObj,
 double x,double y,double speed,
 _S_MAP_OBJECT *pBody)
