@@ -215,7 +215,12 @@ int main()
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
 
+			puts("---------------------------------------------\r");
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
+			puts("---------------------------------------------\r");
+
+			puts("move : w,a,s,d \r");
+			puts("quit : q \r");
 			acc_tick = 0;
 
 		}

@@ -135,6 +135,7 @@ int main()
 				}
 
 			}
+			
 			_S_Potal_Bullet_Object *pObj=&gPotalBulletObject;
 			if(pObj->m_nFSM==0){
 				double potal_bullet_posx=gPlayerPotal.m_nXpos;
@@ -177,6 +178,7 @@ int main()
 
 		}
 
+		//potal_bullet
 		{
 			double potal_bullet_posx=gPlayerPotal.m_nXpos;
 			double potal_bullet_posy=gPlayerPotal.m_nYpos;
@@ -292,7 +294,12 @@ int main()
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
 
+			puts("---------------------------------------------\r");
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
+			puts("---------------------------------------------\r");
+
+			puts("move : w,a,s,d \r");
+			puts("quit : q \r");
 			acc_tick = 0;
 
 		}
