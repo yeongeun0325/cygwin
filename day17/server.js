@@ -30,36 +30,40 @@ net.createServer((socket)=>{
 
         if(header==1004){
             switch(request_type){
-                case 100:   //로그인요청
+                case 100: //로그인 요청
                     break;
-                case 200:   //위치정보 전송
+                case 200: //위치정보 전송
                 {
-                    let index=data.readInt16LE(4);
-                    object_list[index].x=data.readFloatLE(8);
-                    object_list[index].y=data.readFloatLE(12);
+                    let index = data.readInt16LE(4);
+                    object_list[index].x = data.readFloatLE(8);
+                    object_list[index].y = data.readFloatLE(12);
                     console.log(object_list);
+                    console.log(data);
                 }
                     break;
-                case 201:   //위치정보 요청
+                case 201: //위치정보 요청
                 {
-                    let index=data.readInt16LE(4);
-                    let buff=new Buffer(10);
+                    let index = data.readInt16LE(4);
+                    let buff = new Buffer(12);
                     buff.writeInt16LE(1004,0);
-                    buff.writeFloatLE(object_list[index].x,2);
-                    buff.writeFloatLE(object_list[index].y,6);
+                    buff.writeInt16LE(index,2);
+                    buff.writeFloatLE(object_list[index].x,4);
+                    buff.writeFloatLE(object_list[index].y,8);
                     socket.write(buff);
+
                 }
                     break;
-
             }
         }
-        else{
+        else {
             console.log('packet error');
         }
 
-        console.log("header:"+header);
-        console.log('request type:' +request_type);
-    })
+        console.log('header :' + header);
+        console.log('request type :' + request_type);
+
+    });
+
 }).listen(PORT);
 
-console.log('server listen:'+PORT);
+console.log('server listen :' + PORT);
