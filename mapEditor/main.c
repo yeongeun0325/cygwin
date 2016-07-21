@@ -6,8 +6,9 @@
 
 int main(int argc,char *argv[])
 {
-	mapeditor_init();
 
+	mapeditor_init();
+	
 	int bLoop=1;
 
 	while(bLoop)
@@ -20,34 +21,34 @@ int main(int argc,char *argv[])
 			bLoop = 0;
 			mapeditor_close();
 		}
-		else if(!strcmp(pTemp,"dump")){
-			mapeditor_dump();
-		}
-		else if(!strcmp(pTemp,"dump2")){
-			mapeditor_dump2();
-		}
-		else if(!strcmp(pTemp,"new")){
+		else if(!strcmp(pTemp,"new")) {
 			mapeditor_new();
 		}
-		else if(!strcmp(pTemp,"put")){
+		else if(!strcmp(pTemp,"dump")) {
+			mapeditor_dump();
+		}
+		else if(!strcmp(pTemp,"dump2")) {
+			mapeditor_dump2();
+		}
+		else if(!strcmp(pTemp,"put")) {
 			mapeditor_put();
 		}
-		else if( !strcmp(pTemp,"hline")){
-			mapeditor_hline();
+		else if(!strcmp(pTemp,"load")) {
+			mapeditor_load();
 		}
-		else if( !strcmp(pTemp,"vline")){
-			mapeditor_vline();
-		}
-		else if( !strcmp(pTemp,"save")){
+		else if(!strcmp(pTemp,"save")) {
 			mapeditor_save();
 		}
-		else if( !strcmp(pTemp,"load")){
-			mapeditor_load();
+		else if(!strcmp(pTemp,"vline")) {
+			mapeditor_vline();
+		}
+		else if(!strcmp(pTemp,"hline")) {
+			mapeditor_hline();
+		}
+		else {
+			puts("command not found");
+		}
 
-		}
-		else{
-			puts("wrong command");
-		}
 	}
 
 	return 0;
