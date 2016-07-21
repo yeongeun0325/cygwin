@@ -73,5 +73,3 @@ void Plane_init(_S_Plane *pObj,_S_MAP_OBJECT *pBody,double x,double y)
 
 
 }
-
-

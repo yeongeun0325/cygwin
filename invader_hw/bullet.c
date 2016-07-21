@@ -75,7 +75,6 @@ void bullet_fire_1(_S_BULLET_OBJECT *pObj,double x,double y,double speed,double 
 	pObj->m_fYpos=(double)y;
 	pObj->m_fSpeed=speed;
 	pObj->m_fLifeLimit=lifeLimit;
-
 }
 */
 void bullet_init(_S_BULLET_OBJECT *pObj,
@@ -98,5 +97,3 @@ _S_MAP_OBJECT *pBody)
 	pObj->pfFire = bullet_fire;
 
 }
-
-

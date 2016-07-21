@@ -104,5 +104,3 @@ void alien_init(_S_ALIEN_OBJECT *pObj,_S_MAP_OBJECT *pBody)
 
 
 }
-
-
