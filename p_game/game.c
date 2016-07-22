@@ -25,6 +25,7 @@ pthread_t tid;
 struct timespec work_timer;
 double acc_tick,last_tick;
 int bLoop = 1;
+int nStep = 1;
 
 int socket_desc;
 char read_buffer[2000];
@@ -53,7 +54,7 @@ typedef struct _S_PACKET_RECV_POSITIONS {
 
 void *ListenThread(void *arg)
 {
-	while(1) {
+	while(bLoop) {
 		if(recv(socket_desc,
 			read_buffer,2000,0) < 0) {
 			//puts("recv failed");
@@ -71,10 +72,10 @@ void *ListenThread(void *arg)
 
 void *InputThread(void *arg)
 {
-	float xpos = 0;
-	float ypos = 0;
+	float xpos = 10;
+	float ypos = 15;
 
-	while(1)
+	while(bLoop)
 	{
 		if(kbhit() != 0 ) {
 
@@ -290,7 +291,25 @@ int main(int argc,char *argv[])
 					gPlayerObject[0].m_nFSM=0;
 					gAlienObjects[i].m_nFSM=0;
 					system("clear");
-					puts("game over..");
+					printf("----------------------\r\n");
+					printf("      Game over\r\n");
+					printf("  RESTART->y EXIT->n\r\n");
+					printf("----------------------\r\n");
+
+					// char ch=getch();
+					// if(kbhit!=0){
+					// 	if(ch=='y'){
+					// 		system("clear");
+					// 		gPlasmaObjects[i].m_nFSM=1;
+					// 		gPlayerObject[0].m_nFSM=1;
+					// 		gAlienObjects[i].m_nFSM=1;
+					// 		bLoop=1;
+					// 	}
+					// }
+					// else{
+					// 	system("clear");
+					// 	bLoop=0;
+					// }
 					bLoop=0;
 				}
 			}
