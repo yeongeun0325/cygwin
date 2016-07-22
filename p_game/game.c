@@ -343,7 +343,13 @@ int main(int argc,char *argv[])
 			for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++){
 				gPlasmaObjects[i].pfDraw(&gPlasmaObjects[i],&gScreenBuf[1]);
 			}
+			puts("---------------------------------------------\r");
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
+			puts("---------------------------------------------\r");
+
+			puts("move :  w,  a,  s,  d \r");
+            puts("player0 fire : j   player1 fire : k");
+			puts("quit : q \r");
 			acc_tick = 0;
 		}
 

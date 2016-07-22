@@ -26,7 +26,7 @@ static void Apply(_S_ALIEN_OBJECT *pObj,double deltaTick)
 			break;
 		case 2: //move right
 			pObj->m_fXpos += (deltaTick * speed);
-			if(pObj->m_fXpos >= 45) {
+			if(pObj->m_fXpos >= 40) {
 				pObj->m_nFSM = 3;
 				pObj->m_nStep = 0;
 
