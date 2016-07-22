@@ -18,7 +18,7 @@ char Default_Tilepalete[] = {
 	'|',//10
 	'-',//11
 	'*'//12
- };
+};
 
 void map_init(_S_MAP_OBJECT *pObj)
 {
@@ -30,8 +30,8 @@ void map_init(_S_MAP_OBJECT *pObj)
 	pObj->fpPutTile = map_PutTile;
 	pObj->fpDrawTile = map_drawTile;
 	pObj->fpDrawTile_trn = map_drawTile_trn;
-	pObj->fpDrawTile_mirror_v = map_drawTile_mirror_v;
-	pObj->fpDrawTile_mirror_h = map_drawTile_mirror_h;
+	pObj->fpDrawTile_trn_mirror_v = map_drawTile_mirror_v;
+	pObj->fpDrawTile_trn_mirror_h = map_drawTile_mirror_h;
 }
 
 void map_dump(_S_MAP_OBJECT *pObj,char *pTile_pal)
@@ -51,7 +51,6 @@ void map_dump(_S_MAP_OBJECT *pObj,char *pTile_pal)
 		printf("\r\n");
 	}
 }
-
 
 void map_new(_S_MAP_OBJECT *pObj,int nWidth,int nHeight)
 {
@@ -73,17 +72,14 @@ void map_new(_S_MAP_OBJECT *pObj,int nWidth,int nHeight)
 
 void map_PutTile(_S_MAP_OBJECT *pObj, int x,int y,int nTileIndex)
 {
-	//클리핑 처리 
-	if(x >= 0 && y >=0) {
-		if(x < pObj->m_header.m_nWidth && y < pObj->m_header.m_nHeight) {
+	if(x >= 0 && y >= 0) {
+		if(x < pObj->m_header.m_nWidth && y <pObj->m_header.m_nHeight) {
 			pObj->m_pBuf[ pObj->m_header.m_nWidth * y + x  ] = nTileIndex;
 		}
 	}
 }
 
-//0 : 성공
-//1 : 실패 
-int map_save(_S_MAP_OBJECT *pObj,char *filename)
+int map_save(_S_MAP_OBJECT *pObj,char *filename) //0:성공 1:실패
 {
 	FILE *pf = fopen(filename,"wb");
 	fwrite( &( pObj->m_header),sizeof(pObj->m_header),1,pf);
@@ -94,9 +90,8 @@ int map_save(_S_MAP_OBJECT *pObj,char *filename)
 	return 0;
 
 }
-//0: success
-//1 : error
-int map_load(_S_MAP_OBJECT *pObj,char *filename)
+
+int map_load(_S_MAP_OBJECT *pObj,char *filename) //0:성공 1:에러
 {
 	FILE *pf = fopen(filename,"rb");
 	fread( &(pObj->m_header),sizeof(_S_MAP_HEADER),1,pf);
@@ -109,9 +104,6 @@ int map_load(_S_MAP_OBJECT *pObj,char *filename)
 
 	fread(pObj->m_pBuf,nSize,1,pf);
 
-	for(int i=0;i<nSize;i++) {
-		printf("%d,",pObj->m_pBuf[i]);
-	}
 
 	return 0;
 }

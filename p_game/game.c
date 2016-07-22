@@ -20,10 +20,15 @@
 #include "bullet.h"
 #include "alien.h"
 #include "plane_bullet.h"
+#include "potal.h"
+#include "potal_bullet.h"
+
+#define PI 3.141592
 
 pthread_t tid;
 struct timespec work_timer;
 double acc_tick,last_tick;
+double acc_bullet_delay_tick;
 int bLoop = 1;
 int nStep = 1;
 
@@ -38,11 +43,15 @@ _S_MAP_OBJECT gPlayerModel;
 _S_MAP_OBJECT gPlasmaModel;
 _S_MAP_OBJECT gAlienModel;
 _S_MAP_OBJECT gPlaneBulletModel;
+_S_MAP_OBJECT gPotal;
+_S_MAP_OBJECT gPotalBulletModel;
 
 _S_Plane gPlayerObject[2];
 _S_PLANE_BULLET_OBJECT gPlaneBulletObjects[32];
 _S_ALIEN_OBJECT gAlienObjects[8];
 _S_BULLET_OBJECT gPlasmaObjects[32];
+_S_Potal gPlayerPotal;
+_S_Potal_Bullet_Object gPotalBulletObject;
 
 typedef struct _S_PACKET_RECV_POSITIONS {
 	unsigned short header; //0
@@ -72,8 +81,8 @@ void *ListenThread(void *arg)
 
 void *InputThread(void *arg)
 {
-	float xpos = 10;
-	float ypos = 15;
+	float xpos = 30;
+	float ypos = 20;
 
 	while(bLoop)
 	{
@@ -104,17 +113,16 @@ void *InputThread(void *arg)
 						_S_PLANE_BULLET_OBJECT *pObj = &gPlaneBulletObjects[i];
 						if(pObj->m_nFSM==0) { //슬립상태
 							pObj->pfFire(pObj,gPlayerObject[0].m_fXpos,gPlayerObject[0].m_fYpos,10.0,5.0);
-							//pObj->pfFire(pObj,gPlayerObject.m_fXpos,gPlayerObject.m_fYpos,10.0,vx,vy,10.0);
 							break;
 						}
 					}
+					
 					break;
 				case 'k':
 					for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_PLANE_BULLET_OBJECT);i++) {			
 						_S_PLANE_BULLET_OBJECT *pObj = &gPlaneBulletObjects[i];
 						if(pObj->m_nFSM==0) { //슬립상태
 							pObj->pfFire(pObj,gPlayerObject[1].m_fXpos,gPlayerObject[1].m_fYpos,10.0,5.0);
-							//pObj->pfFire(pObj,gPlayerObject.m_fXpos,gPlayerObject.m_fYpos,10.0,vx,vy,10.0);
 							break;
 						}
 					}
@@ -202,7 +210,7 @@ int main(int argc,char *argv[])
 	for(int i=0;i<2;i++)
 	{
 		map_init(&gScreenBuf[i]);
-		map_new(&gScreenBuf[i],45,20);
+		map_new(&gScreenBuf[i],60,30);
 	}
 
 	map_init(&gPlayerModel);
@@ -211,17 +219,22 @@ int main(int argc,char *argv[])
 	map_init(&gPlaneBulletModel);
 	map_load(&gPlaneBulletModel,"bullet1.dat");
 
+	map_init(&gPotal);
+	map_load(&gPotal,"potal.dat");
+
 	map_init(&gAlienModel);
 	map_load(&gAlienModel,"alien.dat");
 
 	map_init(&gPlasmaModel);
 	map_load(&gPlasmaModel,"plasma.dat");
 
-    Plane_init(&gPlayerObject[0],&gPlayerModel,5,15);
+    Plane_init(&gPlayerObject[0],&gPlayerModel,5,25);
 	gPlayerObject[0].m_nFSM = 1;
 
-    Plane_init(&gPlayerObject[1],&gPlayerModel,20,15);
+    Plane_init(&gPlayerObject[1],&gPlayerModel,50,25);
 	gPlayerObject[1].m_nFSM = 1;
+
+	Potal_init(&gPlayerPotal,&gPotal,1,1);
 
     for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_PLANE_BULLET_OBJECT);i++){
 		plane_bullet_init(&gPlaneBulletObjects[i],0,0,0,&gPlaneBulletModel);
@@ -231,9 +244,9 @@ int main(int argc,char *argv[])
 		bullet_init(&gPlasmaObjects[i],0,0,0,&gPlasmaModel);
 	}
 
-    double TablePosition[]={0,10,20,30,40};
+    double TablePosition[]={0,10,20,30,40,50,60};
 
-	for(int i=0;i<5;i++){
+	for(int i=0;i<6;i++){
 		_S_ALIEN_OBJECT *pObj=&gAlienObjects[i];
 		alien_init(pObj,&gAlienModel);
 		pObj->m_fXpos=TablePosition[i];
@@ -265,11 +278,28 @@ int main(int argc,char *argv[])
 
 		}
 
-		for(int i=0;i<5;i++ ){
+		for(int i=0;i<6;i++ ){
 			_S_ALIEN_OBJECT *pObj=&gAlienObjects[i];
 			pObj->pfApply(pObj,delta_tick);
 
 		}
+
+		// _S_Potal_Bullet_Object *pObj=&gPotalBulletObject;
+		// 	if(pObj->m_nFSM==0){
+        //             double potal_bullet_posx=gPlayerPotal.m_nXpos;
+        //             double potal_bullet_posy=gPlayerPotal.m_nYpos;
+
+        //             double target_x=gPlayerObject[0].m_fXpos;
+        //             double target_y=gPlayerObject[0].m_fYpos;
+
+		// 			double vx=target_x-potal_bullet_posx;
+        //             double vy=target_y-potal_bullet_posy;
+
+        //             double dist=sqrt(vx*vx+vy*vy);
+        //             vx/=dist; vy/=dist;
+
+		// 			Potal_Bullet_Fire(&gPotalBulletObject,gPlayerPotal.m_nXpos,gPlayerPotal.m_nYpos,10,vx,vy,10.0);
+		// 	}
 
 		//총알 맞았을때 게임오버
 		for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++) {
@@ -293,23 +323,8 @@ int main(int argc,char *argv[])
 					system("clear");
 					printf("----------------------\r\n");
 					printf("      Game over\r\n");
-					printf("  RESTART->y EXIT->n\r\n");
 					printf("----------------------\r\n");
 
-					// char ch=getch();
-					// if(kbhit!=0){
-					// 	if(ch=='y'){
-					// 		system("clear");
-					// 		gPlasmaObjects[i].m_nFSM=1;
-					// 		gPlayerObject[0].m_nFSM=1;
-					// 		gAlienObjects[i].m_nFSM=1;
-					// 		bLoop=1;
-					// 	}
-					// }
-					// else{
-					// 	system("clear");
-					// 	bLoop=0;
-					// }
 					bLoop=0;
 				}
 			}
@@ -339,6 +354,52 @@ int main(int argc,char *argv[])
 
 		}
 
+		Potal_Bullet_Apply(&gPotalBulletObject,delta_tick);
+
+        //충돌여부확인-거리계산
+        {
+            double potal_bullet_posx=gPlayerPotal.m_nXpos;
+            double potal_bullet_posy=gPlayerPotal.m_nYpos;
+
+            double target_x=gPlayerObject[0].m_fXpos;
+            double target_y=gPlayerObject[0].m_fYpos;
+
+            double angle=0;
+    		angle+=(delta_tick*45);
+	    	double rad=(angle/180.0)*PI;
+
+			double vx=(target_x-potal_bullet_posx)*cos(rad)-(target_y-potal_bullet_posy)*sin(rad);
+			double vy=(target_x-potal_bullet_posx)*sin(rad)+(target_y-potal_bullet_posy)*cos(rad);
+		
+            double dist=sqrt(vx*vx+vy*vy);
+
+            if(dist<0.1){
+                gPotalBulletObject.m_nFSM=0;
+            }
+         }
+
+        acc_bullet_delay_tick+=delta_tick;
+		if(acc_bullet_delay_tick>2.0){	//2초동안 방향설정
+
+			acc_bullet_delay_tick=0;
+
+			double bullet_posx=gPotalBulletObject.m_fXpos;
+			double bullet_posy=gPotalBulletObject.m_fYpos;
+
+			double target_posx=gPlayerObject[0].m_fXpos;
+			double target_posy=gPlayerObject[0].m_fYpos;
+
+			double vx=target_posx-bullet_posx;
+			double vy=target_posy-bullet_posy;
+
+			double dist=sqrt(vx*vx+vy*vy);
+
+			vx/=dist; vy/=dist;
+
+			gPotalBulletObject.m_fvx=vx;
+			gPotalBulletObject.m_fvy=vy;
+		}
+
 		//타이밍 계산 
 		acc_tick += delta_tick;
 		if(acc_tick > 0.1) {
@@ -349,12 +410,15 @@ int main(int argc,char *argv[])
 		    	gPlayerObject[i].pfDraw(&gPlayerObject[i],&gScreenBuf[1]);
             }
 
+			Potal_Draw(&gPlayerPotal,&gScreenBuf[1]);
+			Potal_Bullet_Draw(&gPotalBulletObject,&gScreenBuf[1]);
+
             for(int i=0;i<sizeof(gPlaneBulletObjects)/sizeof(_S_PLANE_BULLET_OBJECT);i++){
 				_S_PLANE_BULLET_OBJECT *pObj = &gPlaneBulletObjects[i];
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
 
-            for(int i=0;i<5;i++) {
+            for(int i=0;i<6;i++) {
 				_S_ALIEN_OBJECT *pObj = &gAlienObjects[i];
 				pObj->pfDraw(pObj,&gScreenBuf[1]);
 			}
@@ -362,9 +426,10 @@ int main(int argc,char *argv[])
 			for(int i=0;i<sizeof(gPlasmaObjects)/sizeof(_S_BULLET_OBJECT);i++){
 				gPlasmaObjects[i].pfDraw(&gPlasmaObjects[i],&gScreenBuf[1]);
 			}
-			puts("---------------------------------------------\r");
+			
+			puts("------------------------------------------------------------\r");
 			map_dump(&gScreenBuf[1],Default_Tilepalete);
-			puts("---------------------------------------------\r");
+			puts("------------------------------------------------------------\r");
 
 			puts("move :  w,  a,  s,  d \r");
             puts("player0 fire : j   player1 fire : k");
